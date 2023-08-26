@@ -1,15 +1,15 @@
 package main
 
 import (
-	"avito-backend-internship/internal/server"
+	"avito-backend-internship/internal/app"
 )
 
 func main() {
-	serverConfig := &server.Config{
+	serverConfig := &app.Config{
 		Port: "3001",
 	}
 
-	s := server.NewServer(serverConfig)
+	s := app.NewServer(serverConfig)
 
 	s.Run()
 }
