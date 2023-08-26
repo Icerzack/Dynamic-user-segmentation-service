@@ -1,6 +1,6 @@
 CREATE TABLE segments (
                         title varchar(100) PRIMARY KEY NOT NULL,
-                        desc text DEFAULT '-',
+                        description text DEFAULT '-',
                         created_at TIMESTAMP WITH TIME ZONE NOT NULL,
                         updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );

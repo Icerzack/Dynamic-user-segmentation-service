@@ -3,10 +3,10 @@ package repository
 import "time"
 
 type Segment struct {
-	Title     string    `db:"title"`
-	Desc      string    `db:"desc"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	Title       string    `db:"title"`
+	Description string    `db:"description"`
+	CreatedAt   time.Time `db:"created_at"`
+	UpdatedAt   time.Time `db:"updated_at"`
 }
 
 type UserSegment struct {

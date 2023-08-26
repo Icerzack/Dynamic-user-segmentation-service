@@ -9,8 +9,6 @@ SQL_FOLDER=$(INTERNAL_PKG_PATH)/db/sql
 compose-up:
 	docker-compose build
 	docker-compose up -d postgres
-	docker cp "$(SQL_FOLDER)"/init.sql pg_test:/docker-entrypoint-initdb.d/init.sql
-	docker exec -u admin pg_test psql app admin -f docker-entrypoint-initdb.d/init.sql
 
 .PHONY: compose-rm
 compose-rm:
