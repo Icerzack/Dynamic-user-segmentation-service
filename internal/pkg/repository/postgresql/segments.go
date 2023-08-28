@@ -42,3 +42,9 @@ func (r *SegmentsRepo) Update(ctx context.Context, segment *repository.Segment, 
 		"UPDATE segments SET title = $1, description = $2, updated_at = $3 WHERE title = $4", segment.Title, segment.Description, time.Now(), title)
 	return result.RowsAffected() > 0, err
 }
+
+func (r *SegmentsRepo) Delete(ctx context.Context, segment *repository.Segment) (bool, error) {
+	result, err := r.db.Exec(ctx,
+		"DELETE FROM segments WHERE title = $1", segment.Title)
+	return result.RowsAffected() > 0, err
+}

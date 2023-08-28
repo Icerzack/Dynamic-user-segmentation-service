@@ -1,6 +1,8 @@
 package app
 
 import (
+	"avito-backend-internship/internal/pkg/model"
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -35,8 +37,31 @@ func (s *Server) mainHandler(writer http.ResponseWriter, request *http.Request) 
 
 func (s *Server) createSegmentHandler(writer http.ResponseWriter, request *http.Request) {
 	if request.Method == http.MethodPost {
+		var segment model.SegmentRequest
+		err := json.NewDecoder(request.Body).Decode(&segment)
+		if err != nil {
+			fmt.Println("Error decoding JSON:", err.Error())
+			return
+		}
+
+		err = s.insertSegmentIntoDatabase(segment)
+		if err != nil {
+			fmt.Println("Error adding segment to database:", err.Error())
+			return
+		}
+
+		var output model.SegmentResponse
+		output.Status = "Success"
+
 		writer.WriteHeader(http.StatusOK)
-		_, err := writer.Write([]byte("add"))
+		writer.Header().Set("Content-Type", "application/json")
+		result, err := json.Marshal(output)
+		if err != nil {
+			fmt.Println("Error marshalling output JSON:", err.Error())
+			return
+		}
+
+		_, err = writer.Write(result)
 		if err != nil {
 			fmt.Println("Error while writing response:", err.Error())
 			return
@@ -53,8 +78,35 @@ func (s *Server) createSegmentHandler(writer http.ResponseWriter, request *http.
 
 func (s *Server) deleteSegmentHandler(writer http.ResponseWriter, request *http.Request) {
 	if request.Method == http.MethodDelete {
+		var segment model.SegmentRequest
+		err := json.NewDecoder(request.Body).Decode(&segment)
+		if err != nil {
+			fmt.Println("Error decoding JSON:", err.Error())
+			return
+		}
+
+		ok, err := s.deleteSegmentFromDatabase(segment)
+		if err != nil {
+			fmt.Println("Error deleting segment from database:", err.Error())
+			return
+		}
+
+		var output model.SegmentResponse
+		if ok {
+			output.Status = "Success"
+		} else {
+			output.Status = "Failed: no such element to delete"
+		}
+
 		writer.WriteHeader(http.StatusOK)
-		_, err := writer.Write([]byte("delete"))
+		writer.Header().Set("Content-Type", "application/json")
+		result, err := json.Marshal(output)
+		if err != nil {
+			fmt.Println("Error marshalling output JSON:", err.Error())
+			return
+		}
+
+		_, err = writer.Write(result)
 		if err != nil {
 			fmt.Println("Error while writing response:", err.Error())
 			return
@@ -70,9 +122,33 @@ func (s *Server) deleteSegmentHandler(writer http.ResponseWriter, request *http.
 }
 
 func (s *Server) userInSegmentHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodPost {
+	if request.Method == http.MethodPut {
+		var usersSegment model.UserSegmentRequest
+		err := json.NewDecoder(request.Body).Decode(&usersSegment)
+		if err != nil {
+			fmt.Println("Error decoding JSON:", err.Error())
+			return
+		}
+
+		addNotExist, deleteNotExist, err := s.modifyUsersSegmentsInDatabase(usersSegment)
+		if err != nil {
+			fmt.Println("Error modifying user-segment in database:", err.Error())
+			return
+		}
+
+		var output model.UserSegmentResponse
+		output.Status = "Success"
+		output.SegmentsTitlesNotExistAdd = addNotExist
+		output.SegmentsTitlesNotExistDelete = deleteNotExist
 		writer.WriteHeader(http.StatusOK)
-		_, err := writer.Write([]byte("modify"))
+		writer.Header().Set("Content-Type", "application/json")
+		result, err := json.Marshal(output)
+		if err != nil {
+			fmt.Println("Error marshalling output JSON:", err.Error())
+			return
+		}
+
+		_, err = writer.Write(result)
 		if err != nil {
 			fmt.Println("Error while writing response:", err.Error())
 			return
@@ -89,8 +165,31 @@ func (s *Server) userInSegmentHandler(writer http.ResponseWriter, request *http.
 
 func (s *Server) getUserSegmentsHandler(writer http.ResponseWriter, request *http.Request) {
 	if request.Method == http.MethodGet {
+		var usersSegment model.UserSegmentRequest
+		err := json.NewDecoder(request.Body).Decode(&usersSegment)
+		if err != nil {
+			fmt.Println("Error decoding JSON:", err.Error())
+			return
+		}
+
+		segments, err := s.getUserSegmentsFromDatabase(usersSegment)
+		if err != nil {
+			fmt.Println("Error reading users segments from database:", err.Error())
+			return
+		}
+
+		var output model.UserSegmentResponse
+		output.Status = "Success"
+		output.Segments = segments
 		writer.WriteHeader(http.StatusOK)
-		_, err := writer.Write([]byte("read"))
+		writer.Header().Set("Content-Type", "application/json")
+		result, err := json.Marshal(output)
+		if err != nil {
+			fmt.Println("Error marshalling output JSON:", err.Error())
+			return
+		}
+
+		_, err = writer.Write(result)
 		if err != nil {
 			fmt.Println("Error while writing response:", err.Error())
 			return

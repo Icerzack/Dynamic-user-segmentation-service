@@ -14,6 +14,7 @@ type SegmentsRepo interface {
 	GetByTitle(ctx context.Context, title string) (*Segment, error)
 	List(ctx context.Context) ([]*Segment, error)
 	Update(ctx context.Context, segment *Segment, title string) (bool, error)
+	Delete(ctx context.Context, segment *Segment) (bool, error)
 }
 
 type UsersSegmentsRepo interface {
