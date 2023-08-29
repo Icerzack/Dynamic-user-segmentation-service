@@ -104,6 +104,10 @@
 
 ![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/ce770c24-ae46-4cce-bc5e-94651bb0737d)
 
+2. Удалить сегмент (корректный запрос):
+
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/22c96dad-b457-4976-9a1f-a1f3c117ebdf)
+
 3. Создать сегмент (некорректный запрос, неправильное наименование полей):
 
 ![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/44d39f69-7b91-4166-8ecd-2b9a97fac627)
