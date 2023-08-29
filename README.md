@@ -72,8 +72,8 @@
 ├── Makefile
 └── README.md
 ```
-Реализация модели хранения для базы данных выглядит не замысловато. Так как в задании не указано, что пользователи должны храниться в этом сервисе, то **подразумевается**, что ID пользователя нам известен заранее и подается из вне как запрос на этот сервис.
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/286731c1-e35d-457b-b4e1-47aa35db91b3)
+Реализация модели хранения для базы данных выглядит следующим образом. Так как в задании не указано, что пользователи должны храниться в этом сервисе, то **подразумевается**, что ID пользователя нам известен заранее и подается из вне как запрос на этот сервис.
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/94573a6a-676d-43d9-b003-a28d5e68b5ef)
 
 Таблица **segments** хранит в себе в качестве ключа название сегмента и его описание. Описание может быть пустым.
 
@@ -93,7 +93,7 @@
 
 В качестве ответа возвращается JSON, который содержит всегда поле "status" и дополнительные.
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/056722ad-7900-4e34-85c3-b02cabbf06cb)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/decd04eb-4df5-4e69-b8a2-b13a96e9bf6b)
 
 Сами структуры запросов и ответов в этих файлах:
 1. https://github.com/Icerzack/avito-backend-internship/blob/main/internal/pkg/model/segment.go
@@ -102,39 +102,39 @@
 Примеры запросов и ответов в Postman:
 1. Создать сегмент (корректный запрос):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/a1ddc4cb-2f7b-4b20-a883-ea889e420239)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/ce770c24-ae46-4cce-bc5e-94651bb0737d)
 
 3. Создать сегмент (некорректный запрос, неправильное наименование полей):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/6cc7f481-becf-4758-84dd-ff9e158021ce)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/44d39f69-7b91-4166-8ecd-2b9a97fac627)
 
 4. Добавить пользователя в сегмент (корректный запрос):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/5652c263-a3d7-426e-84c0-4b0dcdb5f527)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/32b7f640-34d9-481b-9a05-953cd1b72968)
 
 5. Добавить пользователя в сегмент (корректный запрос, но некоторые названия не существуют):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/32bd4e3f-edf8-4340-9fb1-dd4908d409d7)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/1ba32b96-9a6d-4631-9162-e5848f12854b)
 
 6. Удалить пользователя из сегмента (корректный запрос):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/a572e180-07b9-4f70-9908-38234a052d72)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/42b9b7a9-bfb8-4693-b9f4-79e13563b083)
 
 7. Удалить пользователя из сегмента (корректный запрос, но некоторые названия не существуют):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/be47a3a8-d9e7-4100-a077-6cf0d2c027d9)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/3f4691ee-882a-444c-9baf-be610cd1db47)
 
 8. Одновременное создание и удаление (корректный запрос, но некоторые названия не существуют):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/d6fee204-d9a3-480e-b05b-8f739e858c9b)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/e2a1b22a-e1ea-43f1-84b2-944205b2cc7b)
 
 9. Получить сегменты пользователя (корректный запрос):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/daaa5304-94c3-4d12-bfe0-67c90b4f23d7)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/ca02f8b2-a54c-4155-a3ba-87c6a03b8647)
 
 10. Получить сегменты пользователя (корректный запрос, но данный пользователь не содержит сегментов):
 
-![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/a730fd6e-2d29-4a6d-8485-50855db82e69)
+![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/803f39a2-b7b7-4c59-b1d7-024691185a63)
 
 ## Установка и запуск
 
