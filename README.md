@@ -63,7 +63,7 @@
 |       |   └── structs.go              - Структуры для базы данных
 |       └── service
 |           ├── mocks
-|           |   └── mock.go             - Авто-генерация моков для интерфейса DBops
+|           |   └── mock.go             - Авто-генерация моков для интерфейса Service
 |           ├── postgres.go             - Реализация бизнес-логики для PostgreSQL
 |           └── service.go              - Интерфес для работы бизнес-логики
 ├── .gitignore
@@ -132,7 +132,7 @@
 
 ![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/daaa5304-94c3-4d12-bfe0-67c90b4f23d7)
 
-10. Получить сегменты пользователя (корректный запрос, но данный пользователь не содержит сегментов)
+10. Получить сегменты пользователя (корректный запрос, но данный пользователь не содержит сегментов):
 
 ![image](https://github.com/Icerzack/avito-backend-internship/assets/24461208/a730fd6e-2d29-4a6d-8485-50855db82e69)
 
