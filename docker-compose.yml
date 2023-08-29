@@ -10,3 +10,12 @@ services:
       - ./internal/pkg/db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+  avito-app:
+    image: avito-app
+    container_name: avito-app
+    depends_on:
+     - postgres
+    command:
+      - ./app
+    ports:
+      - "3001:3001"
