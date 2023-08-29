@@ -6,6 +6,7 @@ require (
 	github.com/georgysavva/scany v1.2.1
 	github.com/jackc/pgconn v1.14.0
 	github.com/jackc/pgx/v4 v4.18.1
+	go.uber.org/mock v0.2.0
 )
 
 require (
@@ -17,5 +18,6 @@ require (
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jackc/puddle v1.3.0 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 )

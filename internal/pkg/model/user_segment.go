@@ -1,9 +1,9 @@
 package model
 
 type UserSegmentRequest struct {
-	UserID                 int      `json:"user_id"`
-	SegmentsTitlesToAdd    []string `json:"seg_titles_add,omitempty"`
-	SegmentsTitlesToDelete []string `json:"seg_titles_delete,omitempty"`
+	UserID                 *int      `json:"user_id,omitempty"`
+	SegmentsTitlesToAdd    *[]string `json:"seg_titles_add,omitempty"`
+	SegmentsTitlesToDelete *[]string `json:"seg_titles_delete,omitempty"`
 }
 
 type UserSegmentResponse struct {

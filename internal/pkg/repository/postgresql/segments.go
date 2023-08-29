@@ -18,7 +18,7 @@ func NewSegmentsRepo(db db.DBops) *SegmentsRepo {
 
 func (r *SegmentsRepo) Add(ctx context.Context, segment *repository.Segment) error {
 	var title string
-	err := r.db.ExecQueryRow(ctx, "INSERT INTO segments(title, description, created_at, updated_at) VALUES ($1, $2, $3, $3) RETURNING title", segment.Title, segment.Description, time.Now()).Scan(&title)
+	err := r.db.ExecQueryRow(ctx, "INSERT INTO segments(title, description, created_at, updated_at) VALUES ($1, $2, $3, $3) ON CONFLICT (title) DO UPDATE SET title = excluded.title RETURNING title ", segment.Title, segment.Description, time.Now()).Scan(&title)
 	return err
 }
 
