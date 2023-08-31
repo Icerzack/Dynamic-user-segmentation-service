@@ -7,6 +7,7 @@ import (
 	"avito-backend-internship/internal/pkg/repository/postgresql"
 	"avito-backend-internship/internal/pkg/service/history"
 	"context"
+	"strconv"
 	"time"
 )
 
@@ -52,7 +53,7 @@ func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db 
 
 	segs, _ := usersSegmentsRepo.GetByUserID(ctx, *request.UserID)
 	if request.SegmentsTitlesToAdd != nil {
-		for _, segment := range *request.SegmentsTitlesToAdd {
+		for i, segment := range *request.SegmentsTitlesToAdd {
 			_, err := segmentsRepo.GetByTitle(ctx, segment)
 			if err != nil {
 				addNotExist = append(addNotExist, segment)
@@ -71,6 +72,11 @@ func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db 
 					SegmentTitle: segment,
 				})
 				historyService.WriteToFile(*request.UserID, segment, "ADD", time.Now())
+				if request.TTL != nil {
+					if i < len(*request.TTL) && (*request.TTL)[i] != 0 {
+						go s.ttlDetector(ctx, db, *request.UserID, segment, (*request.TTL)[i])
+					}
+				}
 			}
 			if err != nil {
 				return nil, nil, err
@@ -128,4 +134,19 @@ func (s *PostgresService) GetUserSegmentsFromDatabase(ctx context.Context, db db
 	}
 
 	return array, nil
+}
+
+func (s *PostgresService) ttlDetector(ctx context.Context, db db.DBops, userID int, segmentTitle string, ttlSeconds int) {
+	usersSegmentsRepo := postgresql.NewUsersSegmentsRepo(db)
+
+	stringTime, _ := time.ParseDuration(strconv.Itoa(ttlSeconds) + "s")
+	now := time.NewTimer(stringTime)
+	<-now.C
+	_, err := usersSegmentsRepo.Delete(ctx, &repository.UserSegment{
+		UserID:       userID,
+		SegmentTitle: segmentTitle,
+	})
+	if err != nil {
+		return
+	}
 }

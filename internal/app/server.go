@@ -102,7 +102,6 @@ func (s *Server) createSegmentHandler(writer http.ResponseWriter, request *http.
 			_, err = writer.Write(result)
 			if err != nil {
 				fmt.Println("Error while writing response:", err.Error())
-				return
 			}
 			return
 		}
@@ -161,7 +160,6 @@ func (s *Server) deleteSegmentHandler(writer http.ResponseWriter, request *http.
 			_, err = writer.Write(result)
 			if err != nil {
 				fmt.Println("Error while writing response:", err.Error())
-				return
 			}
 			return
 		}
@@ -224,7 +222,6 @@ func (s *Server) userInSegmentHandler(writer http.ResponseWriter, request *http.
 			_, err = writer.Write(result)
 			if err != nil {
 				fmt.Println("Error while writing response:", err.Error())
-				return
 			}
 			return
 		}
@@ -284,7 +281,6 @@ func (s *Server) getUserSegmentsHandler(writer http.ResponseWriter, request *htt
 			_, err = writer.Write(result)
 			if err != nil {
 				fmt.Println("Error while writing response:", err.Error())
-				return
 			}
 			return
 		}
