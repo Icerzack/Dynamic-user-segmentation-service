@@ -16,6 +16,6 @@ services:
     depends_on:
      - postgres
     command:
-      - ./app
+      - ./avito-app
     ports:
       - "3001:3001"

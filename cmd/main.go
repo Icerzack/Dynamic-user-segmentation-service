@@ -3,7 +3,8 @@ package main
 import (
 	"avito-backend-internship/internal/app"
 	"avito-backend-internship/internal/pkg/db"
-	"avito-backend-internship/internal/pkg/service"
+	database "avito-backend-internship/internal/pkg/service/db"
+	"avito-backend-internship/internal/pkg/service/history"
 	"context"
 	"fmt"
 )
@@ -21,13 +22,15 @@ func main() {
 		return
 	}
 
-	postgresService := service.NewPostgresService()
+	postgresService := database.NewPostgresService()
+	csvHistoryService := history.NewCSVHistoryService()
 
 	s := app.NewServer(
 		ctx,
 		config,
 		postgresDB,
 		postgresService,
+		csvHistoryService,
 	)
 
 	s.Run()

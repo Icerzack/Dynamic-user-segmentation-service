@@ -21,3 +21,7 @@ compose-all-up: compose-db-up compose-app-up
 
 .PHONY: compose-all-rm
 compose-all-rm: compose-app-rm compose-db-rm
+
+.PHONY: run-tests
+run-tests:
+	go test -v avito-backend-internship/internal/app

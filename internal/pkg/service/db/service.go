@@ -1,8 +1,9 @@
-package service
+package db
 
 import (
 	"avito-backend-internship/internal/pkg/db"
 	"avito-backend-internship/internal/pkg/model"
+	"avito-backend-internship/internal/pkg/service/history"
 	"context"
 )
 
@@ -11,7 +12,7 @@ import (
 type Service interface {
 	InsertSegmentIntoDatabase(ctx context.Context, db db.DBops, request model.SegmentRequest) error
 	DeleteSegmentFromDatabase(ctx context.Context, db db.DBops, request model.SegmentRequest) (bool, error)
-	ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest) ([]string, []string, error)
+	ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest, historyService history.Service) ([]string, []string, error)
 	GetUserSegmentsFromDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest) ([]model.UserSegments, error)
 }
 
@@ -30,7 +31,7 @@ func (s *ServiceStub) DeleteSegmentFromDatabase(ctx context.Context, db db.DBops
 	return false, nil
 }
 
-func (s *ServiceStub) ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest) ([]string, []string, error) {
+func (s *ServiceStub) ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest, historyService history.Service) ([]string, []string, error) {
 	return nil, nil, nil
 }
 func (s *ServiceStub) GetUserSegmentsFromDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest) ([]model.UserSegments, error) {

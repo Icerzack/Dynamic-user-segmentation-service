@@ -1,11 +1,13 @@
-package service
+package db
 
 import (
 	"avito-backend-internship/internal/pkg/db"
 	"avito-backend-internship/internal/pkg/model"
 	"avito-backend-internship/internal/pkg/repository"
 	"avito-backend-internship/internal/pkg/repository/postgresql"
+	"avito-backend-internship/internal/pkg/service/history"
 	"context"
+	"time"
 )
 
 type PostgresService struct{}
@@ -27,7 +29,6 @@ func (s *PostgresService) InsertSegmentIntoDatabase(ctx context.Context, db db.D
 		Title:       *request.Title,
 		Description: *request.Description,
 	})
-
 	return err
 }
 
@@ -42,7 +43,7 @@ func (s *PostgresService) DeleteSegmentFromDatabase(ctx context.Context, db db.D
 	return false, err
 }
 
-func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest) ([]string, []string, error) {
+func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db db.DBops, request model.UserSegmentRequest, historyService history.Service) ([]string, []string, error) {
 	usersSegmentsRepo := postgresql.NewUsersSegmentsRepo(db)
 	segmentsRepo := postgresql.NewSegmentsRepo(db)
 
@@ -69,6 +70,7 @@ func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db 
 					UserID:       *request.UserID,
 					SegmentTitle: segment,
 				})
+				historyService.WriteToFile(*request.UserID, segment, "ADD", time.Now())
 			}
 			if err != nil {
 				return nil, nil, err
@@ -96,6 +98,7 @@ func (s *PostgresService) ModifyUsersSegmentsInDatabase(ctx context.Context, db 
 			if err != nil {
 				return nil, nil, err
 			}
+			historyService.WriteToFile(*request.UserID, segment, "DEL", time.Now())
 		}
 	}
 

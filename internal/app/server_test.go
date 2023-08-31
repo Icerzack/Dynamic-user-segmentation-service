@@ -3,8 +3,9 @@ package app
 import (
 	"avito-backend-internship/internal/pkg/db"
 	"avito-backend-internship/internal/pkg/model"
-	"avito-backend-internship/internal/pkg/service"
-	mock_service "avito-backend-internship/internal/pkg/service/mocks"
+	db_service "avito-backend-internship/internal/pkg/service/db"
+	"avito-backend-internship/internal/pkg/service/db/mocks"
+	history_service "avito-backend-internship/internal/pkg/service/history"
 	"context"
 	"go.uber.org/mock/gomock"
 	"io"
@@ -57,12 +58,15 @@ func TestServer_mainHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			database := db.NewDBStub()
-			service := service.NewServiceStub()
+			service := db_service.NewServiceStub()
+			history := history_service.NewServiceStub()
+
 			s := NewServer(
 				context.Background(),
 				&Config{Port: ""},
 				database,
 				service,
+				history,
 			)
 
 			s.mainHandler(tt.args.writer, tt.args.request)
@@ -88,7 +92,7 @@ func TestServer_createSegmentHandler(t *testing.T) {
 		request *http.Request
 	}
 	type fields struct {
-		service *mock_service.MockService
+		service *mock_db.MockService
 	}
 	tests := []struct {
 		name           string
@@ -133,7 +137,7 @@ func TestServer_createSegmentHandler(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			f := fields{
-				service: mock_service.NewMockService(ctrl),
+				service: mock_db.NewMockService(ctrl),
 			}
 			if tt.prepare != nil {
 				tt.prepare(&f)
@@ -143,6 +147,7 @@ func TestServer_createSegmentHandler(t *testing.T) {
 				&Config{Port: ""},
 				db.NewDBStub(),
 				f.service,
+				history_service.NewServiceStub(),
 			)
 
 			s.createSegmentHandler(tt.args.writer, tt.args.request)
@@ -168,7 +173,7 @@ func TestServer_deleteSegmentHandler(t *testing.T) {
 		request *http.Request
 	}
 	type fields struct {
-		service *mock_service.MockService
+		service *mock_db.MockService
 	}
 	tests := []struct {
 		name           string
@@ -225,7 +230,7 @@ func TestServer_deleteSegmentHandler(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			f := fields{
-				service: mock_service.NewMockService(ctrl),
+				service: mock_db.NewMockService(ctrl),
 			}
 			if tt.prepare != nil {
 				tt.prepare(&f)
@@ -235,6 +240,7 @@ func TestServer_deleteSegmentHandler(t *testing.T) {
 				&Config{Port: ""},
 				db.NewDBStub(),
 				f.service,
+				history_service.NewServiceStub(),
 			)
 
 			s.deleteSegmentHandler(tt.args.writer, tt.args.request)
@@ -260,7 +266,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 		request *http.Request
 	}
 	type fields struct {
-		service *mock_service.MockService
+		service *mock_db.MockService
 	}
 	tests := []struct {
 		name           string
@@ -272,7 +278,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 		{
 			name: "Test userInSegmentHandler perform modify in database and return 'Success' and 200 status code",
 			prepare: func(f *fields) {
-				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any()).Return([]string{}, []string{}, nil)
+				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any(), gomock.Any()).Return([]string{}, []string{}, nil)
 			},
 			args: args{
 				writer:  httptest.NewRecorder(),
@@ -284,7 +290,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 		{
 			name: "Test userInSegmentHandler perform modify in database and return 'Success and seg_titles_not_exist_add:[a1]' and 200 status code",
 			prepare: func(f *fields) {
-				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any()).Return([]string{"a1"}, []string{}, nil)
+				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any(), gomock.Any()).Return([]string{"a1"}, []string{}, nil)
 			},
 			args: args{
 				writer:  httptest.NewRecorder(),
@@ -296,7 +302,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 		{
 			name: "Test userInSegmentHandler perform modify in database and return 'Success and seg_titles_not_exist_delete:[a1]' and 200 status code",
 			prepare: func(f *fields) {
-				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any()).Return([]string{}, []string{"a1"}, nil)
+				f.service.EXPECT().ModifyUsersSegmentsInDatabase(context.Background(), gomock.Any(), gomock.Any(), gomock.Any()).Return([]string{}, []string{"a1"}, nil)
 			},
 			args: args{
 				writer:  httptest.NewRecorder(),
@@ -329,7 +335,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			f := fields{
-				service: mock_service.NewMockService(ctrl),
+				service: mock_db.NewMockService(ctrl),
 			}
 			if tt.prepare != nil {
 				tt.prepare(&f)
@@ -339,6 +345,7 @@ func TestServer_userInSegmentHandler(t *testing.T) {
 				&Config{Port: ""},
 				db.NewDBStub(),
 				f.service,
+				history_service.NewServiceStub(),
 			)
 
 			s.userInSegmentHandler(tt.args.writer, tt.args.request)
@@ -364,7 +371,7 @@ func TestServer_getUserSegmentsHandler(t *testing.T) {
 		request *http.Request
 	}
 	type fields struct {
-		service *mock_service.MockService
+		service *mock_db.MockService
 	}
 	tests := []struct {
 		name           string
@@ -426,7 +433,7 @@ func TestServer_getUserSegmentsHandler(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			f := fields{
-				service: mock_service.NewMockService(ctrl),
+				service: mock_db.NewMockService(ctrl),
 			}
 			if tt.prepare != nil {
 				tt.prepare(&f)
@@ -436,6 +443,7 @@ func TestServer_getUserSegmentsHandler(t *testing.T) {
 				&Config{Port: ""},
 				db.NewDBStub(),
 				f.service,
+				history_service.NewServiceStub(),
 			)
 
 			s.getUserSegmentsHandler(tt.args.writer, tt.args.request)
