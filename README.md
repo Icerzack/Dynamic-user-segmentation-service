@@ -1,4 +1,4 @@
-# Avito Backend Internship Task
+# Dynamic user segmentation service
 Сервис динамического сегментирования пользователей
 <details>
   <summary>Содержание</summary>
