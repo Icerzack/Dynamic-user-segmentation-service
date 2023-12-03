@@ -64,7 +64,7 @@
 |       |   ├── repository.go           - Паттерн репозиторий
 |       |   └── structs.go              - Структуры для базы данных
 |       └── service
-|	    ├── db
+|           ├── db
 |           |   ├── mocks
 |           |   |   └── mock.go         - Авто-генерация моков для интерфейса Service
 |           |   ├── postgres.go         - Реализация бизнес-логики для PostgreSQL
