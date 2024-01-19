@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/Icerzack/Dynamic-user-segmentation-service/branch/main/graph/badge.svg)](https://codecov.io/gh/Icerzack/Dynamic-user-segmentation-service)
 # Dynamic user segmentation service
 Сервис динамического сегментирования пользователей
 <details>
